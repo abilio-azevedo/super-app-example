@@ -2,6 +2,7 @@ import path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
 import * as Repack from '@callstack/repack';
 
+const STANDALONE = Boolean(process.env.STANDALONE);
 /**
  * More documentation, installation, usage, motivation and differences with Metro is available at:
  * https://github.com/callstack/repack/blob/main/README.md
@@ -17,7 +18,7 @@ import * as Repack from '@callstack/repack';
  * @param env Environment options passed from either Webpack CLI or React Native CLI
  *            when running with `react-native start/bundle`.
  */
-export default (env) => {
+export default env => {
   const {
     mode = 'development',
     context = Repack.getDirname(import.meta.url),
@@ -37,7 +38,7 @@ export default (env) => {
     throw new Error('Missing platform');
   }
 
-    /**
+  /**
    * Using Module Federation might require disabling hmr.
    * Uncomment below to set `devServer.hmr` to `false`.
    *
@@ -110,7 +111,7 @@ export default (env) => {
       path: path.join(dirname, 'build/generated', platform),
       filename: 'index.bundle',
       chunkFilename: '[name].chunk.bundle',
-      publicPath: Repack.getPublicPath({ platform, devServer }),
+      publicPath: Repack.getPublicPath({platform, devServer}),
     },
     /**
      * Configures optimization of the built bundle.
@@ -150,12 +151,12 @@ export default (env) => {
         {
           test: /\.[jt]sx?$/,
           include: [
-            /node_modules(.*[/\\])+react\//,
-            /node_modules(.*[/\\])+react-native/,
+            /node_modules(.*[/\\])+react/,
             /node_modules(.*[/\\])+@react-native/,
             /node_modules(.*[/\\])+@react-navigation/,
             /node_modules(.*[/\\])+@react-native-community/,
             /node_modules(.*[/\\])+@expo/,
+            /node_modules(.*[/\\])+react-freeze/,
             /node_modules(.*[/\\])+pretty-format/,
             /node_modules(.*[/\\])+metro/,
             /node_modules(.*[/\\])+abort-controller/,
@@ -230,6 +231,44 @@ export default (env) => {
           bundleFilename,
           sourceMapFilename,
           assetsPath,
+        },
+      }),
+      new Repack.plugins.ModuleFederationPlugin({
+        name: 'MiniApp',
+        exposes: {
+          './MiniAppNavigator': './src/navigation/MainNavigator',
+        },
+        shared: {
+          react: {
+            singleton: true,
+            eager: STANDALONE,
+            requiredVersion: '18.2.0',
+          },
+          'react-native': {
+            singleton: true,
+            eager: STANDALONE,
+            requiredVersion: '0.72.3',
+          },
+          '@react-navigation/native': {
+            singleton: true,
+            eager: STANDALONE,
+            requiredVersion: '6.1.6',
+          },
+          '@react-navigation/native-stack': {
+            singleton: true,
+            eager: STANDALONE,
+            requiredVersion: '6.9.12',
+          },
+          'react-native-safe-area-context': {
+            singleton: true,
+            eager: STANDALONE,
+            requiredVersion: '4.5.0',
+          },
+          'react-native-screens': {
+            singleton: true,
+            eager: STANDALONE,
+            requiredVersion: '3.20.0',
+          },
         },
       }),
     ],
