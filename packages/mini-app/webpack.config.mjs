@@ -237,6 +237,7 @@ export default env => {
         name: 'MiniApp',
         exposes: {
           './MiniAppNavigator': './src/navigation/MainNavigator',
+          './MiniAppDetailNavigator': './src/screens/GalleryDetailScreen',
         },
         shared: {
           react: {
@@ -270,6 +271,16 @@ export default env => {
             requiredVersion: '3.20.0',
           },
         },
+      }),
+      new Repack.plugins.ChunksToHermesBytecodePlugin({
+        enabled: mode === 'production' && !devServer,
+        test: /\.(js)?bundle$/,
+        exclude: /index.bundle$/,
+      }),
+      new Repack.plugins.CodeSigningPlugin({
+        enabled: mode === 'production',
+        privateKeyPath: path.join('..', '..', 'jwtRS256.key'),
+        outputPath: path.join('build', 'outputs', platform, 'remotes'),
       }),
     ],
   };

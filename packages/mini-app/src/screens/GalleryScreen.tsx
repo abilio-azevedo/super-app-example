@@ -1,21 +1,39 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Button, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {MainStackNavigationProp} from '../navigation/MainNavigator';
 
 const data = Array(10)
   .fill('')
   .map((_, i) => `Picture ${i}`);
 
-const Row = ({title}: {title: string}) => (
-  <View style={styles.row}>
-    <View style={styles.titleContainer}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>
-        The quick brown fox jumps over the lazy dog
-      </Text>
+const Row = ({title}: {title: string}) => {
+  const navigation = useNavigation<MainStackNavigationProp>();
+
+  return (
+    <View style={styles.row}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.subtitle}>
+          The quick brown fox jumps over the lazy dog
+        </Text>
+      </View>
+      <Image
+        source={{uri: 'https://picsum.photos/70?a'}}
+        style={styles.image}
+      />
+      <Button
+        color="rgba(127, 103, 190, 1)"
+        title="Detail"
+        onPress={() => {
+          navigation.navigate('GalleryDetail', {
+            imageUrl: 'https://picsum.photos/70?a',
+          });
+        }}
+      />
     </View>
-    <Image source={{uri: 'https://picsum.photos/70?a'}} style={styles.image} />
-  </View>
-);
+  );
+};
 
 const GalleryScreen = () => {
   return (

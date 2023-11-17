@@ -7,10 +7,14 @@ import {
 
 import HomeScreen from '../screens/HomeScreen';
 import GalleryScreen from '../screens/GalleryScreen';
+import GalleryDetailScreen from '../screens/GalleryDetailScreen';
 
 export type MainStackParamList = {
   Home: undefined;
   Gallery: undefined;
+  GalleryDetail: {
+    imageUrl?: string;
+  };
 };
 
 export type MainStackNavigationProp =
@@ -27,9 +31,11 @@ const MainNavigator = () => {
         headerStyle: styles.header,
         headerTitleStyle: styles.headerTitle,
         headerTintColor: 'rgba(255,255,255,1)',
+        headerShown: false,
       }}>
       <Main.Screen name="Home" component={HomeScreen} />
       <Main.Screen name="Gallery" component={GalleryScreen} />
+      <Main.Screen name="GalleryDetail" component={GalleryDetailScreen} />
     </Main.Navigator>
   );
 };
