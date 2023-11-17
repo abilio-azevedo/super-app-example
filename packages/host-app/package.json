@@ -10,6 +10,7 @@
     "bootstrap:pods": "bundle install && cd ios && bundle exec pod install",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "ios-prd": "react-native run-ios --scheme 'HostApp Prod'",
     "lint": "eslint .",
     "start": "react-native webpack-start",
     "test": "jest"

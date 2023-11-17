@@ -18,7 +18,8 @@
     "run:host-app:ios": "yarn workspace HostApp run ios",
     "run:host-app:android": "yarn workspace HostApp run android",
     "run:mini-app:ios": "yarn workspace MiniApp run ios",
-    "run:mini-app:android": "yarn workspace MiniApp run android"
+    "run:mini-app:android": "yarn workspace MiniApp run android",
+    "generate:keys": "ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key && openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
