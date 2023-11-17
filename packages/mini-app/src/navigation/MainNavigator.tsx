@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, ImageRequireSource} from 'react-native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
@@ -13,7 +13,7 @@ export type MainStackParamList = {
   Home: undefined;
   Gallery: undefined;
   GalleryDetail: {
-    imageUrl?: string;
+    imageSource?: ImageRequireSource;
   };
 };
 

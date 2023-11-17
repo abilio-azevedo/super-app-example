@@ -196,6 +196,11 @@ export default env => {
          */
         {
           test: Repack.getAssetExtensionsRegExp(Repack.ASSET_EXTENSIONS),
+          exclude: [
+            path.resolve(dirname, './src/assets/localAssets'),
+            path.resolve(dirname, './src/assets/inlineAssets'),
+            path.resolve(dirname, './src/assets/remoteAssets')
+          ],
           use: {
             loader: '@callstack/repack/assets-loader',
             options: {
@@ -207,6 +212,47 @@ export default env => {
                * By default all images are scalable.
                */
               scalableAssetExtensions: Repack.SCALABLE_ASSETS,
+            },
+          },
+        },
+        {
+          test: Repack.getAssetExtensionsRegExp(Repack.ASSET_EXTENSIONS),
+          include: [path.resolve(dirname, './src/assets/localAssets')],
+          use: {
+            loader: '@callstack/repack/assets-loader',
+            options: {
+              platform,
+              devServerEnabled: Boolean(devServer),
+              scalableAssetExtensions: Repack.SCALABLE_ASSETS,
+            },
+          },
+        },
+        {
+          test: Repack.getAssetExtensionsRegExp(Repack.ASSET_EXTENSIONS),
+          include: [path.resolve(dirname, './src/assets/inlineAssets')],
+          use: {
+            loader: '@callstack/repack/assets-loader',
+            options: {
+              platform,
+              devServerEnabled: Boolean(devServer),
+              scalableAssetExtensions: Repack.SCALABLE_ASSETS,
+              inline: true,
+            },
+          },
+        },
+        {
+          test: Repack.getAssetExtensionsRegExp(Repack.ASSET_EXTENSIONS),
+          include: [path.resolve(dirname, './src/assets/remoteAssets')],
+          use: {
+            loader: '@callstack/repack/assets-loader',
+            options: {
+              platform,
+              devServerEnabled: Boolean(devServer),
+              scalableAssetExtensions: Repack.SCALABLE_ASSETS,
+              remote: {
+                enabled: true,
+                publicPath: `http://localhost:9000/${platform}/remotes/remote-assets/`,
+              },
             },
           },
         },
@@ -231,6 +277,12 @@ export default env => {
           bundleFilename,
           sourceMapFilename,
           assetsPath,
+          auxiliaryAssetsPath: path.join(
+            dirname,
+            'build/outputs',
+            platform,
+            'remotes',
+          ),
         },
       }),
       new Repack.plugins.ModuleFederationPlugin({

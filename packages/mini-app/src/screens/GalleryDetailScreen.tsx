@@ -9,7 +9,10 @@ const GalleryDetailScreen: React.FC<Props> = ({route}) => {
   return (
     <View style={styles.container}>
       <Image
-        source={{uri: route.params?.imageUrl ?? 'https://picsum.photos/70?a'}}
+        source={
+          route.params?.imageSource ??
+          require('../assets/inlineAssets/pic_1.jpg')
+        }
         style={styles.image}
       />
     </View>

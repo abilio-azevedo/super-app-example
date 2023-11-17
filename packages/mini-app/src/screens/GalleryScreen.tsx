@@ -1,15 +1,30 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Button, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  Image,
+  ImageRequireSource,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {MainStackNavigationProp} from '../navigation/MainNavigator';
 
-const data = Array(10)
+const pics = [
+  require('../assets/inlineAssets/pic_1.jpg'),
+  require('../assets/inlineAssets/pic_2.jpg'),
+  require('../assets/localAssets/pic_3.jpg'),
+  require('../assets/localAssets/pic_4.jpg'),
+  require('../assets/remoteAssets/pic_5.jpg'),
+];
+
+const data = Array(5)
   .fill('')
-  .map((_, i) => `Picture ${i}`);
+  .map((_, i) => ({title: `Picture ${i}`, source: pics[i]}));
 
-const Row = ({title}: {title: string}) => {
+const Row = ({title, source}: {title: string; source: ImageRequireSource}) => {
   const navigation = useNavigation<MainStackNavigationProp>();
-
   return (
     <View style={styles.row}>
       <View style={styles.titleContainer}>
@@ -18,16 +33,13 @@ const Row = ({title}: {title: string}) => {
           The quick brown fox jumps over the lazy dog
         </Text>
       </View>
-      <Image
-        source={{uri: 'https://picsum.photos/70?a'}}
-        style={styles.image}
-      />
+      <Image source={source} style={styles.image} />
       <Button
         color="rgba(127, 103, 190, 1)"
         title="Detail"
         onPress={() => {
           navigation.navigate('GalleryDetail', {
-            imageUrl: 'https://picsum.photos/70?a',
+            imageSource: source,
           });
         }}
       />
@@ -38,9 +50,9 @@ const Row = ({title}: {title: string}) => {
 const GalleryScreen = () => {
   return (
     <ScrollView style={styles.container}>
-      {data.map(title => (
+      {data.map(({title, source}) => (
         <React.Fragment key={title}>
-          <Row title={title} />
+          <Row title={title} source={source} />
           <View style={styles.separator} />
         </React.Fragment>
       ))}

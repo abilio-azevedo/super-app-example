@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, ImageRequireSource} from 'react-native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
@@ -15,7 +15,7 @@ export type MainStackParamList = {
   Detail: undefined;
   MiniApp: undefined;
   MiniAppDetail: {
-    imageUrl?: string;
+    imageSource?: ImageRequireSource;
   };
 };
 
