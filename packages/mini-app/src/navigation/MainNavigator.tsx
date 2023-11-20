@@ -1,13 +1,19 @@
-import React from 'react';
-import {StyleSheet, ImageRequireSource} from 'react-native';
 import {
-  createNativeStackNavigator,
   NativeStackNavigationProp,
+  createNativeStackNavigator,
 } from '@react-navigation/native-stack';
+import React from 'react';
+import {ImageRequireSource, StyleSheet} from 'react-native';
 
-import HomeScreen from '../screens/HomeScreen';
-import GalleryScreen from '../screens/GalleryScreen';
+import {
+  HeaderBackButton,
+  HeaderBackButtonProps,
+} from '@react-navigation/elements';
 import GalleryDetailScreen from '../screens/GalleryDetailScreen';
+import GalleryScreen from '../screens/GalleryScreen';
+import HomeScreen from '../screens/HomeScreen';
+
+const STANDALONE = Boolean(process.env.STANDALONE);
 
 export type MainStackParamList = {
   Home: undefined;
@@ -22,18 +28,39 @@ export type MainStackNavigationProp =
 
 const Main = createNativeStackNavigator<MainStackParamList>();
 
+const BackButton: React.FC<HeaderBackButtonProps & {navigation: any}> = ({
+  navigation,
+  ...props
+}) => (
+  <HeaderBackButton
+    {...props}
+    onPress={() => navigation.goBack()}
+    labelVisible={false}
+  />
+);
+
 const MainNavigator = () => {
+  const NavOptions = {
+    headerTitle: 'MiniApp',
+    headerBackTitleVisible: false,
+    headerStyle: styles.header,
+    headerTitleStyle: styles.headerTitle,
+    headerTintColor: 'rgba(255,255,255,1)',
+  };
   return (
-    <Main.Navigator
-      screenOptions={{
-        headerTitle: 'MiniApp',
-        headerBackTitleVisible: false,
-        headerStyle: styles.header,
-        headerTitleStyle: styles.headerTitle,
-        headerTintColor: 'rgba(255,255,255,1)',
-        headerShown: false,
-      }}>
-      <Main.Screen name="Home" component={HomeScreen} />
+    <Main.Navigator screenOptions={NavOptions}>
+      <Main.Screen
+        name="Home"
+        component={HomeScreen}
+        options={
+          STANDALONE
+            ? undefined
+            : ({navigation}) => ({
+                ...NavOptions,
+                headerLeft: props => BackButton({navigation, ...props}),
+              })
+        }
+      />
       <Main.Screen name="Gallery" component={GalleryScreen} />
       <Main.Screen name="GalleryDetail" component={GalleryDetailScreen} />
     </Main.Navigator>

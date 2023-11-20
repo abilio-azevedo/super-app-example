@@ -12,9 +12,12 @@
   "packageManager": "yarn@3.4.1",
   "scripts": {
     "bootstrap": "yarn && yarn workspaces foreach run bootstrap",
+    "bundle": "yarn workspace MiniApp run bundle",
+    "server": "yarn workspace MiniApp run server",
     "start": "concurrently -P 'yarn:start:*(!standalone) {1}'",
     "start:host-app": "yarn workspace HostApp run start",
     "start:mini-app": "yarn workspace MiniApp run start",
+    "run:host-app:ios-prd": "yarn workspace HostApp run ios-prd",
     "run:host-app:ios": "yarn workspace HostApp run ios",
     "run:host-app:android": "yarn workspace HostApp run android",
     "run:mini-app:ios": "yarn workspace MiniApp run ios",

@@ -25,7 +25,7 @@ const HomeScreen = () => {
       />
       <Button
         color="rgba(127, 103, 190, 1)"
-        title="Navigate to MiniAppScreen"
+        title="Navigate to MiniAppDetailScreen"
         onPress={() => {
           navigation.navigate('MiniAppDetail', {});
         }}

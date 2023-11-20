@@ -16,6 +16,13 @@ const HomeScreen = () => {
           navigation.navigate('Gallery');
         }}
       />
+      <Button
+        color="rgba(127, 103, 190, 1)"
+        title="Navigate to HostApp"
+        onPress={() => {
+          navigation.popToTop();
+        }}
+      />
     </View>
   );
 };

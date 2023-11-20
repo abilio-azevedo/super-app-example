@@ -224,6 +224,7 @@ export default env => {
               platform,
               devServerEnabled: Boolean(devServer),
               scalableAssetExtensions: Repack.SCALABLE_ASSETS,
+              inline: mode === "development",
             },
           },
         },
@@ -249,8 +250,9 @@ export default env => {
               platform,
               devServerEnabled: Boolean(devServer),
               scalableAssetExtensions: Repack.SCALABLE_ASSETS,
+              inline: mode === "development",
               remote: {
-                enabled: true,
+                enabled: mode === "production",
                 publicPath: `http://localhost:9000/${platform}/remotes/remote-assets/`,
               },
             },

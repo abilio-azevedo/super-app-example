@@ -36,7 +36,11 @@ const MainNavigator = () => {
       }}>
       <Main.Screen name="Home" component={HomeScreen} />
       <Main.Screen name="Detail" component={DetailScreen} />
-      <Main.Screen name="MiniApp" component={MiniAppScreen} />
+      <Main.Screen
+        name="MiniApp"
+        component={MiniAppScreen}
+        options={{headerShown: false}}
+      />
       <Main.Screen name="MiniAppDetail" component={MiniAppDetailScreen} />
     </Main.Navigator>
   );
